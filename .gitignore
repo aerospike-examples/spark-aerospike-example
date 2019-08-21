@@ -1,0 +1,14 @@
+
+.cache-main
+
+.classpath
+
+.project
+
+*.prefs
+
+*.properties
+/bin/
+/project/project/
+/project/target/
+/target/
