@@ -25,14 +25,6 @@ object aeroJoinExample extends LazyLogging with Serializable {
     .config("spark.ui.enabled", "false")
     .getOrCreate()
 
-  val schema: StructType = new StructType(Array(
-    StructField("key", StringType, nullable = true),
-    StructField("customer_id", StringType, nullable = false),
-    StructField("last", StringType, nullable = true),
-    StructField("first", StringType, nullable = true),
-    StructField("stars", IntegerType, nullable = true)
-  ))
-
   def main(args: Array[String]) {
     import session.implicits._
 
@@ -55,9 +47,19 @@ object aeroJoinExample extends LazyLogging with Serializable {
       option("aerospike.updateByKey", "customer_id").
       option("aerospike.set", "BestCustomers").
       save()
+    session.stop()
   }
 
   def loadCustomerData(): Unit = {
+
+    val schema: StructType = new StructType(Array(
+      StructField("key", StringType, nullable = true),
+      StructField("customer_id", StringType, nullable = false),
+      StructField("last", StringType, nullable = true),
+      StructField("first", StringType, nullable = true),
+      StructField("stars", IntegerType, nullable = true)
+    ))
+
     val rows = Seq(
       Row("Fraser_Malcolm", "customer1", "Fraser", "Malcolm", 5),
       Row("Hawke_Bob", "customer2", "Hawke", "Bob", 4),
@@ -75,7 +77,6 @@ object aeroJoinExample extends LazyLogging with Serializable {
       option("aerospike.updateByKey", "customer_id").
       option("aerospike.set", "Customers").
       save()
-
   }
 }
 
