@@ -1,5 +1,5 @@
 # spark-aerojoin-example
-An example app that makes use of aeroJoin to read records from the aerospike database into a DataSet
+An example app that makes use of aeroJoin
 
 ## Building and running
 
@@ -22,7 +22,8 @@ Then submit a job to your spark installation.
 
 ## What does this example do?
 
-This spark job will do a couple of things showing how aeroJoin can be used.
+This spark job will do a couple of things showing how aeroJoin can be used. It will take a list of ids and load the 
+Aerospike records with those keys, filter those records, and write the filtered list back into Aerospike.
 
 ### Setting environment
 
@@ -141,7 +142,11 @@ aql> select * from Business.Customers
 5 rows in set (0.035 secs)
 
 OK
+```
 
+This was the test data we loaded in the first step
+
+```
 aql> select * from Business.BestCustomers
 +-------------+----------+------------------+-----------+-------+
 | customer_id | first    | key              | last      | stars |
@@ -151,3 +156,5 @@ aql> select * from Business.BestCustomers
 1 row in set (0.052 secs)
 
 ```
+
+This is the filtered data of the one 5 star customer that was in the list of provided ids.
