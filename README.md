@@ -1,4 +1,7 @@
-# spark-aerojoin-example
+# spark-aerospike-example
+
+
+## Aerojoin spark application
 An example app that makes use of aeroJoin
 
 ## Building and running
