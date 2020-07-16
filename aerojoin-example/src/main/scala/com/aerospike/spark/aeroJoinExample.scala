@@ -1,6 +1,5 @@
 package com.aerospike.spark
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SaveMode, SparkSession}
@@ -11,12 +10,12 @@ import org.apache.spark.sql.{Row, SaveMode, SparkSession}
  *
  * Prereqs: A working Aerospike Connect for Spark and an Aerospike server running on default port on localhost with at least 1 namespace named "Business"
  */
-object aeroJoinExample extends LazyLogging with Serializable {
+object aeroJoinExample extends Serializable {
   val conf: SparkConf = new SparkConf()
     .setAppName("AeroJoin")
     .set("aerospike.seedhost", "localhost")
     .set("aerospike.port", "3000")
-    .set("aerospike.namespace", "Business")
+    .set("aerospike.namespace", "test")
 
   val session: SparkSession = SparkSession.builder()
     .config(conf)
