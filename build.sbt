@@ -1,4 +1,3 @@
-import sbtassembly.MergeStrategy._
 import scala.util.Properties
 
 name := "spark-aerojoin-example"
@@ -13,7 +12,7 @@ crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
 
 scalaVersion := "2.11.8"
 
-val sparkHome = Properties.envOrElse("RAF_HOME", "/opt/spark")
+val sparkHome = Properties.envOrElse("SPARK_HOME", "/opt/spark")
 
 javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
 
