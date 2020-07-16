@@ -2,7 +2,7 @@ import scala.util.Properties
 
 name := "aerojoin-example"
 
-version := "0.1"
+version := "1.2.0"
 
 scalaVersion := "2.12.11"
 def sysPropOrDefault(propName:String,default:String):String = Option(System.getProperty(propName)).getOrElse(default)
