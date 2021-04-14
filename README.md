@@ -2,25 +2,28 @@
 
 
 ## Aerojoin spark application
-An example app that makes use of aeroJoin
+An example app that makes use of aeroJoin. You must have a working spark installation (3.0.0) with the [Aerospike Connect for Spark installed](https://www.aerospike.com/enterprise/download/connectors/aerospike-spark/notes.html).
 
 ## Building and running
 
-Build using sbt
-
-```bash
-sbt package
-```
+### Build using sbt
+  - `cd` to the project root directory  `spark-aerospike-example`
+  - run following bash commands appropriately
+     ``` bash
+      export AerospikeSparkJarPath="absolute-path-to-aerospike-spark-assembly-3.0.1.jar"
+      sbt package
+    ```
 
 To run there are a couple of prerequisites:
+ 
+ 
+### Submit spark job
 
-1. You must have a running Aerospike server with at least one namespace configured called "Business". 
-1. You must have a working spark installation with the [Aerospike Connect for Spark installed](https://www.aerospike.com/docs/connectors/enterprise/spark/installation.html). 
-
-Then submit a job to your spark installation. 
+Then submit a job to your spark installation. If not provided `aerospike.seedhost` and  `aerospike.namespace` are assumed to be 
+`localhost:3000` and `test` respectively. The script assumes that provided ports are TCP enabled.  
 
 ```bash
-/your/spark/installation/path/bin/spark-submit  target/scala-2.11/spark-aerojoin-example_2.11-1.0.jar
+spark-submit --jars $AerospikeSparkJarPath --class com.aerospike.spark.aeroJoinExample  target/scala-2.12/spark-aerojoin-example_2.12-1.0.jar   aerospike.seedhost IP:PORT aerospike.namespace test 
 ```
 
 ## What does this example do?
@@ -33,11 +36,11 @@ Aerospike records with those keys, filter those records, and write the filtered 
 First we must add some configuration:
 
 ```scala
-  val conf: SparkConf = new SparkConf()
-    .setAppName("AeroJoin")
-    .set("aerospike.seedhost", "localhost")
-    .set("aerospike.port", "3000")
-    .set("aerospike.namespace", "Business")
+
+ val conf: SparkConf = new SparkConf()
+       .setAppName("AeroJoin")
+       .set("aerospike.seedhost", allParams.getOrElse("aerospike.seedhost","localhost:3000") )
+       .set("aerospike.namespace", allParams.getOrElse("aerospike.namespace","test"))
 ```
 
 This is for an Aerospike server running on the default port on this machine as well as defining which namespace we are using (
@@ -58,7 +61,7 @@ Next we are using a spark session so we will define that:
 As a first step we must load some test data into the database.
 
 ```scala
-  def loadCustomerData(): Unit = {
+  def loadCustomerData(session: SparkSession): Unit = {
 
     val schema: StructType = new StructType(Array(
       StructField("key", StringType, nullable = true),
@@ -81,7 +84,7 @@ As a first step we must load some test data into the database.
 
     customerDF.write.
       mode(SaveMode.Overwrite).
-      format("com.aerospike.spark.sql").
+      format("aerospike").
       option("aerospike.updateByKey", "customer_id").
       option("aerospike.set", "Customers").
       save()
@@ -90,7 +93,7 @@ As a first step we must load some test data into the database.
 ```
 
 Here we are creating 5 customers with a 5 star rating system and saving them to the Customers set of the configured 
-(eg Business) namespace. The keys for these records will be the value in the `customer_id` column.
+namespace. The keys for these records will be the value in the `customer_id` column.
 
 ### Generate DataFrame of customer ids
 
@@ -121,7 +124,7 @@ There should be only 1 even though there are two in the raw data from the databa
 
   bestCustomers.map(c => new Customer(c.key, c.customer_id, c.first, c.last, c.stars)).toDF("key", "customer_id", "last", "first", "stars").
       write.mode(SaveMode.Overwrite).
-      format("com.aerospike.spark.sql").
+      format("aerospike").
       option("aerospike.updateByKey", "customer_id").
       option("aerospike.set", "BestCustomers").
       save()

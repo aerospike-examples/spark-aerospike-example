@@ -9,32 +9,21 @@ organization := "com.aerospike"
 mainClass in (Compile, run) := Some("com.aerospike.spark.aeroJoinExample")
 mainClass in assembly := Some("com.aerospike.spark.aeroJoinExample")
 
-crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0")
+scalaVersion := "2.12.11"
 
-scalaVersion := "2.11.8"
-
-val sparkHome = Properties.envOrElse("RAF_HOME", "/opt/spark")
-
-javacOptions ++= Seq("-source", "1.7", "-target", "1.7")
-
-parallelExecution in test := false
-
-fork in test := true
+val aerospikeJarPath = Properties.envOrElse("AerospikeSparkJarPath", "/opt/spark/aerospike_connector.jar")
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
+scalaVersion := "2.12.11"
+crossScalaVersions := Seq(scalaVersion.value)
+val sparkVer = "3.0.0"
+val hadoopVer = "3.3.0"
 
 libraryDependencies ++= Seq(
-	"org.apache.spark"            %% "spark-core"             % "2.2.0",
-	"org.apache.spark"            %% "spark-sql"              % "2.2.0",
-	"org.apache.spark"            %% "spark-mllib"            % "2.2.0",
-	"org.apache.spark"            %% "spark-streaming"        % "2.2.0",
-	"com.ning"                    % "async-http-client"       % "1.9.10",
-	
-	"com.databricks"              %% "spark-csv"              % "1.5.0",
-	"com.aerospike"               %% "aerospike-spark"        % "provided" from s"file://${sparkHome}/jars/aerospike-spark-assembly-1.0.0.jar",
-	"com.aerospike"               %  "aerospike-helper-java"  % "1.2.2",
-	"com.aerospike"               %  "aerospike-client"       % "4.0.8",
-	"com.typesafe.scala-logging"  %% "scala-logging-slf4j"    % "2.1.2",
-	"org.scalatest"               %% "scalatest"              % "2.2.1" % Test,
-	"joda-time"                   % "joda-time"               % "2.9.9" % Test
+	"org.apache.spark"            %% "spark-core"   % sparkVer % Provided,
+	"org.apache.spark"            %% "spark-sql"   % sparkVer % Provided,
+  "org.apache.hadoop" % "hadoop-common" % hadoopVer % Provided,
+  "org.apache.hadoop" % "hadoop-mapreduce-client-core" % hadoopVer % Provided,
+	"com.aerospike"               %% "aerospike-spark"        % "provided" from s"file://${aerospikeJarPath}",
 )
 
 resolvers ++= Seq("Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository")
