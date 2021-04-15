@@ -12,10 +12,7 @@ An example app that makes use of aeroJoin. You must have a working spark install
      ``` bash
       export AerospikeSparkJarPath="absolute-path-to-aerospike-spark-assembly-3.0.1.jar"
       sbt package
-    ```
-
-To run there are a couple of prerequisites:
- 
+    ``` 
  
 ### Submit spark job
 
