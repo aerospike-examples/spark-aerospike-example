@@ -11,7 +11,7 @@ mainClass in assembly := Some("com.aerospike.spark.aeroJoinExample")
 
 scalaVersion := "2.12.11"
 
-val aerospikeJarPath = Properties.envOrElse("AerospikeSparkJarPath", "/opt/spark/aerospike_connector.jar")
+val aerospikeJarPath = Properties.envOrElse("AerospikeSparkJarPath", "/home/joem/src/aerospike-spark/target/scala-2.12/aerospike-spark-4.3.1-spark3.0-scala2.12-allshaded.jar")
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 scalaVersion := "2.12.11"
 crossScalaVersions := Seq(scalaVersion.value)
