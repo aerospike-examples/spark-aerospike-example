@@ -17,17 +17,21 @@ scalaVersion := "2.12.11"
 crossScalaVersions := Seq(scalaVersion.value)
 val sparkVer = "3.0.0"
 val hadoopVer = "3.3.0"
+val connectorVersion = "4.3.1-spark3.2-scala2.12-allshaded"
 
 libraryDependencies ++= Seq(
 	"org.apache.spark"            %% "spark-core"   % sparkVer % Provided,
 	"org.apache.spark"            %% "spark-sql"   % sparkVer % Provided,
   "org.apache.hadoop" % "hadoop-common" % hadoopVer % Provided,
   "org.apache.hadoop" % "hadoop-mapreduce-client-core" % hadoopVer % Provided,
-	"com.aerospike"               %% "aerospike-spark"        % "provided" from s"file://${aerospikeJarPath}",
+
+//	"com.aerospike"               %% "aerospike-spark"        % "provided" from s"file://${aerospikeJarPath}",
+  "com.aerospike" %% "aerospike-spark" % connectorVersion,
 )
 
 resolvers ++= Seq("Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository")
 resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
+resolvers += "Artifactory Realm" at "https://aerospike.jfrog.io/artifactory/spark-connector"
 publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/.m2/repository")))
 
 cancelable in Global := true

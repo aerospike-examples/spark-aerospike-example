@@ -1,11 +1,8 @@
 package com.aerospike.spark
 import org.apache.spark.SparkConf
 import org.apache.spark.internal.Logging
-import org.apache.spark.sql.catalyst.expressions.MonotonicallyIncreasingID
-import org.apache.spark.sql.functions.{monotonicallyIncreasingId, monotonically_increasing_id}
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
-import org.apache.spark.sql.{Row, SaveMode, SparkSession}
-import com.aerospike.client.AerospikeClient
+import org.apache.spark.sql.functions.monotonically_increasing_id
+import org.apache.spark.sql.{SaveMode, SparkSession}
 
 import scala.Console.println
 import scala.annotation.tailrec
@@ -14,8 +11,6 @@ import scala.sys.exit
 
 
 /**
- * This example will load some data into specified namespace(by default test) in an specified aerospike database (by default running localhost:3000).
- * It will then use aeroJoin to take a sequence of ids and load the appropriate customer data, filter it, and print out the result.
  *
  * Prereqs: A working Aerospike Connect for Spark and an Aerospike server running on default port on localhost with at least 1 namespace named "Business"
  */
