@@ -1,6 +1,6 @@
 # spark-aerospike-example
 
-***NOTE: This is only an example application that performs some basic operations. For a Tutorial on using the spark connector please see https://www.aerospike.com/docs/connect/tutorials/spark/notebook.html***
+***NOTE: This is only an example application that performs some basic operations. For a Tutorial on using the spark connector please see https://aerospike.com/docs/connectors/spark/tutorials/notebook/***
 
 ## Aerojoin spark application
 An example app that makes use of aeroJoin. You must have a working spark installation (3.0.0) with the [Aerospike Connect for Spark installed](https://www.aerospike.com/enterprise/download/connectors/aerospike-spark/notes.html).
